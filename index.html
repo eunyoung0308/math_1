@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>고등학교 공통수학 기초 연습문제 생성기</title>
+  <!-- KaTeX 수식 렌더링 라이브러리 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 비인쇄 영역: 웹 애플리케이션 UI -->
+  <div class="no-print app-wrapper">
+    <!-- 헤더 -->
+    <header class="app-header">
+      <div class="header-left">
+        <span class="badge-teacher">교사용</span>
+        <h1>📐 고등학교 공통수학 기초 연습문제 생성기</h1>
+        <p class="subtitle">수학 기초가 부족한 학생을 위한 2022 개정 교육과정 기반 맞춤형 짧은 문제 생성 및 A4 인쇄 시스템</p>
+      </div>
+      <div class="header-right">
+        <button id="openApiModalBtn" class="btn btn-outline" type="button">
+          <span class="icon">🔑</span> API 키 설정
+          <span id="apiKeyBadge" class="status-indicator">미설정</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 메인 컨테이너 (컨트롤 패널 + 미리보기) -->
+    <main class="main-content">
+      <!-- 설정 패널 (좌측 / 상단) -->
+      <section class="control-panel">
+        <h2 class="panel-title">문제 출제 설정</h2>
+
+        <!-- 1. 교육과정 드롭다운 (3단계 연동) -->
+        <div class="form-group">
+          <label for="subjectSelect" class="form-label">
+            <span class="step-num">1</span> 과목 선택
+          </label>
+          <select id="subjectSelect" class="form-select">
+            <option value="">-- 과목을 선택하세요 --</option>
+            <option value="공통수학1" selected>공통수학1</option>
+            <option value="공통수학2">공통수학2</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="domainSelect" class="form-label">
+            <span class="step-num">2</span> 영역 선택
+          </label>
+          <select id="domainSelect" class="form-select">
+            <!-- 자바스크립트로 동적 채움 -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="standardSelect" class="form-label">
+            <span class="step-num">3</span> 성취기준 선택
+          </label>
+          <select id="standardSelect" class="form-select standard-select">
+            <!-- 자바스크립트로 동적 채움 -->
+          </select>
+          <div id="standardDetail" class="standard-detail-box"></div>
+        </div>
+
+        <!-- 2. 난이도 선택 -->
+        <div class="form-group">
+          <label class="form-label">
+            <span class="step-num">4</span> 난이도 선택
+          </label>
+          <div class="difficulty-group">
+            <label class="difficulty-card">
+              <input type="radio" name="difficulty" value="하" checked>
+              <div class="card-content">
+                <span class="diff-tag diff-easy">하</span>
+                <span class="diff-desc">계산 위주<br><small>기본 공식·직접 연산</small></span>
+              </div>
+            </label>
+            <label class="difficulty-card">
+              <input type="radio" name="difficulty" value="중">
+              <div class="card-content">
+                <span class="diff-tag diff-mid">중</span>
+                <span class="diff-desc">기본 개념<br><small>표준 예제 적용</small></span>
+              </div>
+            </label>
+            <label class="difficulty-card">
+              <input type="radio" name="difficulty" value="상">
+              <div class="card-content">
+                <span class="diff-tag diff-hard">상</span>
+                <span class="diff-desc">교과서 활용<br><small>실생활·도형·개념 연계 발전</small></span>
+              </div>
+            </label>
+          </div>
+          <p class="form-help">※ 기초가 부족한 학생을 위해 어려운 사고를 요하지 않는 <strong>짧고 명확한 문제</strong>로 구성됩니다.</p>
+        </div>
+
+        <!-- 3. 문제 수 설정 -->
+        <div class="form-group">
+          <label class="form-label">
+            <span class="step-num">5</span> 문제 수 선택
+          </label>
+          <div class="count-selector">
+            <div class="quick-btns">
+              <button type="button" class="btn btn-chip" data-count="3">3문항</button>
+              <button type="button" class="btn btn-chip active" data-count="5">5문항</button>
+              <button type="button" class="btn btn-chip" data-count="8">8문항</button>
+              <button type="button" class="btn btn-chip" data-count="10">10문항</button>
+            </div>
+            <div class="direct-input-wrap">
+              <label for="questionCountInput" class="direct-label">직접 입력:</label>
+              <input type="number" id="questionCountInput" class="form-input count-input" min="1" max="20" step="1" value="5">
+              <span class="input-unit">문항</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. 시험지 헤더 옵션 -->
+        <div class="form-group">
+          <label class="form-label">
+            <span class="step-num">6</span> 시험지 제목 설정 (선택)
+          </label>
+          <input type="text" id="paperTitleInput" class="form-input" placeholder="예: 1학년 수학 기초 다지기 연습 (기본값 자동 생성)">
+        </div>
+
+        <!-- 생성 버튼 -->
+        <button id="generateBtn" class="btn btn-primary btn-generate" type="button">
+          <span class="btn-text">✨ 연습문제 생성하기 (gpt-4o-mini)</span>
+          <span class="btn-spinner" style="display:none;"></span>
+        </button>
+      </section>
+
+      <!-- 결과 및 미리보기 영역 (우측 / 하단) -->
+      <section class="preview-panel">
+        <div class="preview-header">
+          <h2>📄 생성 결과 및 A4 미리보기</h2>
+          <div class="action-buttons" id="previewActions" style="display:none;">
+            <div class="view-toggle">
+              <button type="button" class="btn btn-sm btn-outline active" id="viewAllBtn">전체 보기</button>
+              <button type="button" class="btn btn-sm btn-outline" id="viewQuestionsBtn">문제만 보기</button>
+              <button type="button" class="btn btn-sm btn-outline" id="viewAnswersBtn">정답·해설만 보기</button>
+            </div>
+            <button type="button" class="btn btn-success" id="printBtn">
+              🖨️ A4 크기로 PDF 저장 / 인쇄
+            </button>
+          </div>
+        </div>
+
+        <!-- 로딩 오버레이 -->
+        <div id="loadingBox" class="loading-box" style="display:none;">
+          <div class="spinner"></div>
+          <h3 id="loadingStatusText">AI가 학생 맞춤형 문제를 생성하고 있습니다...</h3>
+          <p id="loadingSubText" class="loading-sub">성취기준을 분석하여 짧고 직관적인 연습문제를 제작 중입니다. 잠시만 기다려 주세요.</p>
+        </div>
+
+        <!-- 초기 안내 안내문 -->
+        <div id="emptyNotice" class="empty-notice">
+          <div class="notice-icon">📝</div>
+          <h3>과목과 성취기준을 선택한 후 문제를 생성해 주세요</h3>
+          <p>
+            1. 우측 상단의 <strong>[API 키 설정]</strong>을 눌러 본인의 OpenAI API Key를 등록하세요.<br>
+            2. <strong>과목 → 영역 → 성취기준</strong>을 순서대로 선택하고 원하는 난이도와 문항 수를 지정하세요.<br>
+            3. <strong>[연습문제 생성하기]</strong> 버튼을 누르면 인쇄용 A4 시험지가 즉시 생성됩니다.
+          </p>
+        </div>
+
+        <!-- A4 인쇄 규격 미리보기 래퍼 -->
+        <div id="paperPreviewWrapper" class="paper-preview-wrapper" style="display:none;">
+          <!-- 실제 출력될 학습지/시험지 컨테이너 -->
+          <div id="printableDocument" class="printable-document">
+            <!-- JS로 동적 렌더링 -->
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 관리자 암호 인증 모달 다이얼로그 (비인쇄) -->
+  <div id="authModal" class="modal-backdrop no-print" style="display:none;">
+    <div class="modal-dialog auth-dialog">
+      <div class="modal-header">
+        <h3>🔒 관리자 인증</h3>
+        <button type="button" class="modal-close" id="closeAuthModalBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">
+          API 키 설정 및 관리는 관리자 전용 기능입니다.<br>
+          설정 창을 열려면 <strong>관리자 암호</strong>를 입력해 주세요.
+        </p>
+        <div class="form-group">
+          <label for="adminPasswordInput" class="form-label">관리자 암호</label>
+          <div class="password-input-group">
+            <input type="password" id="adminPasswordInput" class="form-input" placeholder="암호 4자리 입력" autocomplete="current-password" maxlength="20">
+          </div>
+          <div id="authErrorMsg" class="auth-error-msg" style="display:none;"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancelAuthBtn" class="btn btn-outline">취소</button>
+        <button type="button" id="submitAuthBtn" class="btn btn-primary">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- API 키 설정 모달 다이얼로그 (비인쇄) -->
+  <div id="apiModal" class="modal-backdrop no-print" style="display:none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>🔑 OpenAI API Key 설정</h3>
+        <button type="button" class="modal-close" id="closeApiModalBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">
+          문제를 생성하기 위해 사용자의 OpenAI API Key가 필요합니다.<br>
+          입력하신 키는 사용자의 웹 브라우저 로컬 저장소(localStorage)에만 안전하게 저장되며 외부 서버로 전송되지 않습니다.
+        </p>
+        <div class="form-group">
+          <label for="apiKeyInput" class="form-label">API Key (sk-...)</label>
+          <div class="password-input-group">
+            <input type="password" id="apiKeyInput" class="form-input" placeholder="sk-proj-..." autocomplete="off">
+            <button type="button" id="toggleApiKeyVisBtn" class="btn btn-sm btn-outline">보기</button>
+          </div>
+        </div>
+        <div class="modal-info-box">
+          ℹ️ 시스템 모델: <strong>gpt-4o-mini</strong> (지정 완료)
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="deleteApiKeyBtn" class="btn btn-danger-outline">삭제</button>
+        <button type="button" id="saveApiKeyBtn" class="btn btn-primary">저장하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 메인 스크립트 -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,958 @@
+/* ==========================================================================
+   기본 스타일 및 CSS 변수 설정
+   ========================================================================== */
+:root {
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: #eff6ff;
+  --primary-border: #bfdbfe;
+  
+  --secondary-color: #475569;
+  --success-color: #10b981;
+  --danger-color: #ef4444;
+  --warning-color: #f59e0b;
+  
+  --bg-color: #f8fafc;
+  --panel-bg: #ffffff;
+  --border-color: #e2e8f0;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  
+  --diff-easy: #059669;
+  --diff-easy-bg: #ecfdf5;
+  --diff-mid: #d97706;
+  --diff-mid-bg: #fffbeb;
+  --diff-hard: #dc2626;
+  --diff-hard-bg: #fef2f2;
+  
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-paper: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   화면 레이아웃 (반응형)
+   ========================================================================== */
+.app-wrapper {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* 헤더 */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--panel-bg);
+  padding: 1.25rem 2rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem;
+  gap: 1.5rem;
+}
+
+.header-left h1 {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.badge-teacher {
+  display: inline-block;
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  margin-bottom: 0.35rem;
+}
+
+.subtitle {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+.status-indicator {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  background: #fee2e2;
+  color: #991b1b;
+  margin-left: 0.4rem;
+}
+
+.status-indicator.configured {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* 메인 2단 그리드 */
+.main-content {
+  display: grid;
+  grid-template-columns: 440px 1fr;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+/* 좌측 컨트롤 패널 */
+.control-panel {
+  background: var(--panel-bg);
+  padding: 1.75rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 1.5rem;
+}
+
+.panel-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f1f5f9;
+  color: #0f172a;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.5rem;
+}
+
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--primary-light);
+  color: var(--primary-color);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  margin-right: 0.35rem;
+}
+
+.form-select, .form-input {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.92rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background-color: #ffffff;
+  color: var(--text-main);
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.form-select:focus, .form-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.standard-select {
+  font-size: 0.88rem;
+}
+
+.standard-detail-box {
+  margin-top: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  background-color: #f8fafc;
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  color: #475569;
+  line-height: 1.5;
+  display: none;
+}
+
+.standard-detail-box.show {
+  display: block;
+}
+
+/* 난이도 라디오 카드 */
+.difficulty-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.difficulty-card {
+  position: relative;
+  cursor: pointer;
+}
+
+.difficulty-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.difficulty-card .card-content {
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  transition: all 0.2s ease;
+  background: #fff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.diff-tag {
+  display: inline-block;
+  font-weight: 800;
+  font-size: 1.05rem;
+  margin-bottom: 0.2rem;
+}
+
+.diff-easy { color: var(--diff-easy); }
+.diff-mid { color: var(--diff-mid); }
+.diff-hard { color: var(--diff-hard); }
+
+.diff-desc {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.25;
+}
+
+.diff-desc small {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.difficulty-card input[type="radio"]:checked + .card-content {
+  border-color: var(--primary-color);
+  background: var(--primary-light);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.form-help {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
+
+/* 문항 수 선택 */
+.count-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.quick-btns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+}
+
+.btn-chip {
+  padding: 0.45rem 0.3rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  background: #f1f5f9;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: #334155;
+  transition: all 0.15s ease;
+}
+
+.btn-chip:hover {
+  background: #e2e8f0;
+}
+
+.btn-chip.active {
+  background: var(--primary-color);
+  color: #ffffff;
+  border-color: var(--primary-color);
+}
+
+.direct-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f8fafc;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+.direct-label {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.count-input {
+  width: 70px;
+  padding: 0.35rem 0.5rem;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.input-unit {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+/* 버튼 스타일 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.btn-sm {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.82rem;
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--border-color);
+  color: #334155;
+}
+
+.btn-outline:hover {
+  background: #f1f5f9;
+}
+
+.btn-outline.active {
+  background: #334155;
+  color: #ffffff;
+  border-color: #334155;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.btn-generate {
+  width: 100%;
+  padding: 0.9rem;
+  font-size: 1.02rem;
+  margin-top: 0.5rem;
+}
+
+.btn-success {
+  background: var(--success-color);
+  color: #ffffff;
+}
+
+.btn-success:hover {
+  background: #059669;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.btn-danger-outline {
+  background: transparent;
+  border-color: #fca5a5;
+  color: var(--danger-color);
+}
+
+.btn-danger-outline:hover {
+  background: #fef2f2;
+}
+
+/* 우측 결과 및 미리보기 패널 */
+.preview-panel {
+  background: var(--panel-bg);
+  padding: 1.75rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  min-height: 600px;
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.preview-header h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.view-toggle {
+  display: flex;
+  gap: 0.3rem;
+  background: #f1f5f9;
+  padding: 0.2rem;
+  border-radius: var(--radius-sm);
+}
+
+/* 안내 및 로딩 상태 */
+.empty-notice {
+  padding: 5rem 2rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.notice-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.empty-notice h3 {
+  font-size: 1.15rem;
+  color: #334155;
+  margin-bottom: 0.75rem;
+}
+
+.empty-notice p {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.loading-box {
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e2e8f0;
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 1.5rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-box h3 {
+  font-size: 1.15rem;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.loading-sub {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   A4 시험지/학습지 스타일 (화면 미리보기 & 인쇄 공통 규격)
+   ========================================================================== */
+.paper-preview-wrapper {
+  background: #e2e8f0;
+  padding: 2rem 1rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+.printable-document {
+  background: #ffffff;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 18mm 20mm 20mm;
+  box-shadow: var(--shadow-paper);
+  color: #000000;
+  font-size: 10.5pt;
+  line-height: 1.7;
+}
+
+/* 시험지 상단 타이틀 영역 */
+.exam-header {
+  border-bottom: 2px solid #000;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+}
+
+.exam-meta-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9.5pt;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.exam-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.exam-main-title {
+  font-size: 19pt;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #000;
+}
+
+.student-info-table {
+  border-collapse: collapse;
+  font-size: 9.5pt;
+}
+
+.student-info-table td {
+  border: 1px solid #777;
+  padding: 4px 8px;
+  text-align: center;
+}
+
+.student-info-table .info-label {
+  background: #f5f5f5;
+  font-weight: 700;
+  width: 42px;
+}
+
+.student-info-table .info-value {
+  width: 60px;
+}
+
+.exam-subtitle-row {
+  margin-top: 8px;
+  font-size: 9pt;
+  color: #555;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.exam-tag {
+  background: #eee;
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-weight: 600;
+  color: #222;
+}
+
+/* 문항 목록 레이아웃 (세로 순서 2단 시험지 스타일) */
+.questions-columns,
+.questions-grid {
+  column-count: 2;
+  column-gap: 20mm;
+  column-rule: 1px solid #e0e0e0;
+  column-fill: balance;
+  width: 100%;
+  position: relative;
+}
+
+/* 문항 카드 */
+.question-item {
+  page-break-inside: avoid;
+  break-inside: avoid;
+  display: block;
+  margin-bottom: 14mm;
+  min-height: 55mm; /* 학생들이 풀이를 적을 충분한 공백 확보 */
+}
+
+.q-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.q-num {
+  font-size: 12pt;
+  font-weight: 800;
+  color: #000;
+  line-height: 1.3;
+}
+
+.q-content {
+  font-size: 10.5pt;
+  font-weight: 500;
+  line-height: 1.65;
+  word-break: keep-all;
+}
+
+/* 객관식 보기 (있는 경우) */
+.q-choices {
+  margin-top: 10px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 10pt;
+}
+
+/* 풀이 여백 영역 */
+.q-workspace {
+  flex: 1;
+  min-height: 35mm;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 6px 0;
+}
+
+.q-answer-box {
+  border: 1px dashed #bbb;
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 9pt;
+  color: #888;
+}
+
+/* 정답 및 해설 영역 (별도 페이지 분리) */
+.answer-sheet-section {
+  margin-top: 25px;
+}
+
+.page-break {
+  page-break-before: always;
+  break-before: page;
+}
+
+.answer-header {
+  border-bottom: 2px solid #000;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.answer-header h2 {
+  font-size: 15pt;
+  font-weight: 800;
+}
+
+.answer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.answer-item {
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 10px 14px;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.ans-title {
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 4px;
+}
+
+.ans-solution {
+  font-size: 9.5pt;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   모달 스타일
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-dialog {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  max-width: 500px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+.auth-dialog {
+  max-width: 420px;
+}
+
+.auth-error-msg {
+  color: var(--danger-color);
+  font-size: 0.82rem;
+  margin-top: 0.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-desc {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+
+.password-input-group {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.modal-info-box {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #f1f5f9;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  color: #334155;
+}
+
+.modal-footer {
+  padding: 1rem 1.5rem;
+  background: #f8fafc;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+/* ==========================================================================
+   모바일 & 태블릿 반응형 미디어 쿼리
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .app-wrapper {
+    padding: 1rem;
+  }
+  
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .control-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+  
+  .header-right {
+    width: 100%;
+  }
+  
+  .header-right button {
+    width: 100%;
+  }
+  
+  .difficulty-group {
+    grid-template-columns: 1fr;
+  }
+  
+  .quick-btns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .preview-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .view-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .view-toggle button {
+    flex: 1;
+  }
+  
+  .btn-success {
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   A4 인쇄 전용 스타일 (@media print)
+   ========================================================================== */
+@media print {
+  /* 불필요한 모든 웹 UI 숨김 */
+  .no-print, .no-print * {
+    display: none !important;
+  }
+
+  body, html {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 10pt !important;
+    color: #000000 !important;
+  }
+
+  .paper-preview-wrapper {
+    background: transparent !important;
+    padding: 0 !important;
+    display: block !important;
+    box-shadow: none !important;
+  }
+
+  .printable-document {
+    width: 100% !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 14mm 15mm 15mm 15mm;
+  }
+
+  .page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+
+  .questions-columns,
+  .questions-grid {
+    column-count: 2 !important;
+    column-gap: 18mm !important;
+    column-rule: 1px solid #bbb !important;
+    column-fill: auto !important;
+    width: 100% !important;
+  }
+
+  .question-item {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-bottom: 12mm !important;
+  }
+
+  .answer-item {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    background: transparent !important;
+    border: 1px solid #ccc !important;
+  }
+
+  /* 인쇄 시 링크 밑줄 및 URL 표시 제거 */
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
